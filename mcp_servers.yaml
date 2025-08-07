@@ -1,0 +1,229 @@
+# Croq MCP (Model Context Protocol) Server Configuration
+# This file defines external tools and services that Croq can connect to
+
+servers:
+  # Built-in filesystem server for file operations
+  filesystem:
+    enabled: true
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.filesystem"]
+    args: []
+    env:
+      MCP_FILESYSTEM_ROOT: "."
+      MCP_FILESYSTEM_WRITE: "true"
+    timeout: 10
+    auto_restart: true
+    description: "File system operations (read, write, list directories)"
+    tools:
+      - read_file
+      - write_file
+      - list_directory
+      - file_stats
+      - create_directory
+      - delete_file
+
+  # Built-in git server for version control
+  git:
+    enabled: true
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.git"]
+    args: []
+    env:
+      MCP_GIT_REPO_ROOT: "."
+    timeout: 15
+    auto_restart: true
+    description: "Git version control operations"
+    tools:
+      - git_status
+      - git_log
+      - git_diff
+      - git_branch
+      - git_commit
+      - git_push
+      - git_pull
+
+  # Built-in web search server
+  search:
+    enabled: false  # Requires API key
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.search"]
+    args: []
+    env:
+      MCP_SEARCH_ENGINE: "duckduckgo"  # or "google", "bing"
+      # MCP_SEARCH_API_KEY: "your_api_key_here"  # If using Google/Bing
+    timeout: 20
+    auto_restart: true
+    description: "Web search capabilities"
+    tools:
+      - web_search
+      - search_code_examples
+      - search_documentation
+
+  # Example: SQLite database server
+  database:
+    enabled: false
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.database"]
+    args: []
+    env:
+      MCP_DB_PATH: "./croq_data.db"
+      MCP_DB_TYPE: "sqlite"
+    timeout: 10
+    auto_restart: true
+    description: "Database operations and queries"
+    tools:
+      - execute_query
+      - describe_table
+      - list_tables
+      - backup_database
+
+  # Example: HTTP API server
+  api_client:
+    enabled: false
+    transport: http
+    url: "http://localhost:8080/mcp"
+    headers:
+      Authorization: "Bearer your_token_here"
+      Content-Type: "application/json"
+    timeout: 15
+    auto_restart: false
+    description: "HTTP API integration"
+    tools:
+      - make_request
+      - get_endpoint
+      - post_data
+      - upload_file
+
+  # Example: WebSocket server
+  realtime_data:
+    enabled: false
+    transport: websocket
+    url: "ws://localhost:9090/mcp"
+    timeout: 30
+    auto_restart: true
+    description: "Real-time data streaming"
+    tools:
+      - subscribe_events
+      - send_message
+      - get_live_data
+
+  # Example: Custom Python MCP server
+  custom_tool:
+    enabled: false
+    transport: stdio
+    command: ["python", "custom_mcp_server.py"]
+    args: ["--config", "custom_config.json"]
+    env:
+      CUSTOM_API_KEY: "your_custom_key"
+      CUSTOM_ENDPOINT: "https://api.custom.com"
+    timeout: 20
+    auto_restart: true
+    description: "Your custom tool integration"
+    tools:
+      - custom_function_1
+      - custom_function_2
+      - process_data
+
+# Global MCP configuration
+config:
+  # Connection settings
+  max_connections: 10
+  connection_timeout: 30
+  request_timeout: 60
+  
+  # Retry settings
+  max_retries: 3
+  retry_delay: 2
+  backoff_factor: 1.5
+  
+  # Health check settings
+  health_check_interval: 60
+  health_check_timeout: 10
+  
+  # Security settings
+  validate_ssl: true
+  allow_self_signed: false
+  trusted_hosts: []
+  
+  # Logging settings
+  log_requests: true
+  log_responses: false  # May contain sensitive data
+  log_errors: true
+  
+  # Performance settings
+  enable_caching: true
+  cache_ttl: 300
+  max_concurrent_requests: 5
+
+# Development and testing servers
+development:
+  # Mock server for testing
+  mock_server:
+    enabled: false
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.mock"]
+    args: ["--responses", "mock_responses.json"]
+    timeout: 5
+    auto_restart: true
+    description: "Mock server for testing MCP integration"
+    tools:
+      - mock_success
+      - mock_error
+      - mock_timeout
+      - mock_data
+
+  # Debug server with enhanced logging
+  debug_server:
+    enabled: false
+    transport: stdio
+    command: ["python", "-m", "core.mcp_servers.debug"]
+    args: ["--verbose"]
+    env:
+      DEBUG_MODE: "true"
+      LOG_LEVEL: "DEBUG"
+    timeout: 30
+    auto_restart: true
+    description: "Debug server with detailed logging"
+    tools:
+      - debug_info
+      - trace_execution
+      - performance_metrics
+
+# Plugin-specific MCP servers
+# These are loaded by plugins and can be configured here
+plugin_servers:
+  # Code analysis plugin MCP server
+  code_analysis:
+    enabled: true
+    transport: stdio
+    command: ["python", "-m", "plugins.code_analysis.mcp_server"]
+    args: []
+    env:
+      ANALYSIS_DEPTH: "full"
+      INCLUDE_METRICS: "true"
+    timeout: 30
+    auto_restart: true
+    description: "Advanced code analysis and metrics"
+    tools:
+      - analyze_complexity
+      - find_security_issues
+      - suggest_refactoring
+      - generate_docs
+
+  # Documentation plugin MCP server
+  documentation:
+    enabled: false
+    transport: stdio
+    command: ["python", "-m", "plugins.documentation.mcp_server"]
+    args: []
+    env:
+      DOC_FORMAT: "markdown"
+      INCLUDE_EXAMPLES: "true"
+    timeout: 20
+    auto_restart: true
+    description: "Documentation generation and management"
+    tools:
+      - generate_readme
+      - create_api_docs
+      - update_changelog
+      - validate_docs

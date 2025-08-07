@@ -1,0 +1,250 @@
+# Example Plugin Configuration
+# This file defines metadata and configuration for the example plugin
+
+name: example_plugin
+version: 1.0.0
+description: "Comprehensive example plugin demonstrating all Croq plugin capabilities"
+author: "Croq Development Team"
+license: "MIT"
+homepage: "https://github.com/your-org/croq"
+
+# Plugin dependencies
+dependencies:
+  required: []
+  optional:
+    - rich
+    - pydantic
+
+# Plugin capabilities
+capabilities:
+  commands: true
+  hooks: true
+  mcp_tools: true
+  configuration: true
+  statistics: true
+
+# Commands exposed by this plugin
+commands:
+  greet:
+    description: "Greet someone with a friendly message"
+    parameters:
+      name:
+        type: string
+        default: "World"
+        description: "Name to greet"
+    example: "plugin call example_plugin.greet Alice"
+
+  status:
+    description: "Show plugin status and information"
+    parameters: {}
+    returns: object
+    example: "plugin call example_plugin.status"
+
+  config:
+    description: "Get or set configuration values"
+    parameters:
+      key:
+        type: string
+        optional: true
+        description: "Configuration key"
+      value:
+        type: string
+        optional: true
+        description: "Value to set"
+    example: "plugin call example_plugin.config debug_mode true"
+
+  stats:
+    description: "Show plugin statistics"
+    returns: object
+    example: "plugin call example_plugin.stats"
+
+  demo:
+    description: "Demonstrate plugin features"
+    parameters:
+      feature:
+        type: string
+        default: "all"
+        enum: ["all", "hooks", "commands", "mcp", "config", "stats"]
+        description: "Feature to demonstrate"
+    example: "plugin call example_plugin.demo hooks"
+
+  test_hook:
+    description: "Test hook execution with a fake generation"
+    returns: string
+    example: "plugin call example_plugin.test_hook"
+
+# Hooks provided by this plugin
+hooks:
+  pre_generation:
+    description: "Log generation requests and add metadata"
+    priority: 100
+    conditions:
+      - config.log_requests == true
+
+  post_generation:
+    description: "Enhance generation responses"
+    priority: 100
+    conditions:
+      - config.enhance_responses == true
+
+  pre_request:
+    description: "Log all API requests"
+    priority: 50
+
+  post_request:
+    description: "Log all API responses"
+    priority: 50
+
+# MCP tools provided by this plugin
+mcp_tools:
+  example_tool:
+    description: "Example tool from the example plugin"
+    parameters:
+      message:
+        type: string
+        required: true
+        description: "Message to process"
+      format:
+        type: string
+        enum: ["json", "text", "html"]
+        default: "text"
+        description: "Output format"
+    returns:
+      type: string
+      description: "Processed message"
+    example: 'mcp call example_tool {"message": "Hello World!", "format": "json"}'
+
+# Default configuration
+config:
+  enabled: true
+  greeting_message: "Hello from Example Plugin!"
+  log_requests: true
+  enhance_responses: true
+  debug_mode: false
+
+# Plugin settings and metadata
+settings:
+  # Plugin loading
+  lazy_load: false
+  auto_enable: true
+  
+  # Resource limits
+  max_memory: "50MB"
+  max_cpu: "10%"
+  timeout: 30
+  
+  # Security settings
+  sandbox: false
+  permissions:
+    - read_files
+    - write_config
+    - network_access
+  
+  # Development settings
+  hot_reload: true
+  debug_port: null
+  log_level: "INFO"
+
+# Plugin lifecycle hooks
+lifecycle:
+  on_install:
+    - "Creating example plugin directories..."
+    - "Setting up default configuration..."
+  
+  on_uninstall:
+    - "Cleaning up configuration files..."
+    - "Removing plugin data..."
+  
+  on_enable:
+    - "Registering hooks and commands..."
+    - "Starting plugin services..."
+  
+  on_disable:
+    - "Unregistering hooks and commands..."
+    - "Stopping plugin services..."
+
+# Documentation and examples
+documentation:
+  readme: |
+    # Example Plugin
+
+    This plugin demonstrates all the capabilities of the Croq plugin system.
+
+    ## Features
+
+    - **Commands**: Expose CLI functionality
+    - **Hooks**: Intercept and modify generation process
+    - **MCP Tools**: Provide external tool integration
+    - **Configuration**: Runtime customization
+    - **Statistics**: Usage tracking and monitoring
+
+    ## Usage
+
+    ### Commands
+    ```bash
+    # Greet someone
+    python enhanced_cli.py plugins call example_plugin.greet "Alice"
+
+    # Check plugin status
+    python enhanced_cli.py plugins call example_plugin.status
+
+    # Configure the plugin
+    python enhanced_cli.py plugins call example_plugin.config debug_mode true
+    ```
+
+    ### Hooks
+    The plugin automatically registers hooks when enabled:
+    - Pre-generation logging
+    - Post-generation enhancement
+    - Request/response logging
+
+    ### MCP Tools
+    ```bash
+    # Use the example tool
+    python enhanced_cli.py mcp call example_tool '{"message": "Hello!", "format": "json"}'
+    ```
+
+  examples:
+    basic_usage: |
+      # Load and use the example plugin
+      python enhanced_cli.py plugins load example_plugin
+      python enhanced_cli.py plugins call example_plugin.greet "World"
+      python enhanced_cli.py plugins call example_plugin.status
+
+    configuration: |
+      # Configure the plugin
+      python enhanced_cli.py plugins call example_plugin.config debug_mode true
+      python enhanced_cli.py plugins call example_plugin.config greeting_message "Hi there!"
+
+    hooks_demo: |
+      # Enable debug mode to see hook output
+      python enhanced_cli.py plugins call example_plugin.config debug_mode true
+      python enhanced_cli.py generate "Hello world" --codebase
+
+    mcp_integration: |
+      # Use MCP tools
+      python enhanced_cli.py mcp call example_tool '{"message": "Test message", "format": "json"}'
+
+# Testing configuration
+testing:
+  unit_tests: true
+  integration_tests: true
+  test_commands:
+    - "pytest plugins/example_plugin/tests/"
+  test_data:
+    - "test_config.json"
+    - "mock_responses.json"
+
+# Versioning and updates
+versioning:
+  compatible_with: ">=1.0.0"
+  breaking_changes: []
+  deprecations: []
+  migration_guide: null
+
+# Additional metadata
+metadata:
+  tags: ["example", "demo", "tutorial"]
+  category: "development"
+  maturity: "stable"
+  maintenance: "active"
