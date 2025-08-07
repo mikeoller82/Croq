@@ -1,4 +1,4 @@
-# Croq Optimized 🚀
+# Croq 🚀
 
 **Advanced AI Code Assistant**
 
