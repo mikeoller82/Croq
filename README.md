@@ -1,6 +1,6 @@
 # Croq Optimized 🚀
 
-**Advanced AI Code Assistant - Competing with Claude Code and Gemini CLI**
+**Advanced AI Code Assistant**
 
 Croq Optimized is a high-performance AI code assistant that combines multiple AI models with intelligent routing, advanced caching, comprehensive code analysis, and real-time streaming responses.
 
