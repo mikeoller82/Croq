@@ -2,7 +2,7 @@
 
 **Advanced AI Code Assistant**
 
-Croq Optimized is a high-performance AI code assistant that combines multiple AI models with intelligent routing, advanced caching, comprehensive code analysis, and real-time streaming responses.
+Croq is a high-performance AI code assistant that combines multiple AI models with intelligent routing, advanced caching, comprehensive code analysis, and real-time streaming responses.
 
 ## 🎯 Key Features
 
